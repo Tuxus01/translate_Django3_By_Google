@@ -1,0 +1,94 @@
+{% load static  %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'traductor/bootstrap.min.css' %}" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+    <title>Translator </title>
+  </head>
+  <body>
+   <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">App - Traductor</span>
+    </nav>
+  
+
+    </br>
+<form type="get" action="/">
+    <div class="card">
+    <div class="card-header">
+       Powered by Google Translator
+    </div>
+    <div class="card-body center">
+        <div class="row">
+            <div class="col">
+                <div class="form-group text-primary">
+                    <label for="exampleFormControlSelect1">Origen</label>
+                    <select name="origen" class="form-control " id="exampleFormControlSelect1">
+                    {% if ORIGEN == "Español"%}
+                    <option class="text-primary" selected >Español</option>
+                    <option >Ingles</option>
+                    {% else %}
+                    <option  >Español</option>
+                    <option selected >Ingles</option>
+                    {% endif %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group text-success">
+                    <label for="exampleFormControlSelect1"> Destino</label>
+                    <select name="destino" class="form-control " id="exampleFormControlSelect1">
+                    {% if DESTINO == "Ingles"%}
+                    <option selected >Ingles</option>
+                    <option>Español</option>
+                    {% else %}
+                    <option  >Ingles</option>
+                    <option selected>Español</option>
+                    {% endif %}
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+                <div class="col">
+                  
+                         <div class="form-group">
+                        <textarea name="traductor_box" class="form-control text-primary" id="exampleFormControlTextarea1" rows="10" >  {{ Original }} </textarea>
+                        </div>
+                    
+                </div>
+                <div class="col">
+             
+                  
+                    <div class="form-group">
+                        <textarea class="form-control text-success" id="exampleFormControlTextarea1" rows="10"> {{ TEXT }} </textarea>
+                        </div>
+                  
+
+                </div>
+            </div>
+        <div class="row">
+            <div class="col">
+               
+                <button   type="submit" class="btn btn-primary btn-lg btn-block">Generar Traduccion</button>
+           
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</form>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <link rel="stylesheet" href="{% static 'traductor/jquery-3.4.1.slim.min.js' %}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'traductor/popper.min.js' %}" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'traductor/bootstrap.min.js' %}" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+   
+  </body>
+</html>
