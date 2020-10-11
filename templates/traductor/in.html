@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load l10n %}
+{% block content %}
+{% load i18n static %}
+
+<template>
+    <v-app id="inspire">
+      <v-main>
+        <v-container
+          class="fill-height"
+          fluid
+        >
+
+        
+
+
+        <v-snackbar
+        v-model="snackbar"
+        :timeout="timeout"
+      >
+        [[ text_snac ]]
+  
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="blue"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+
+
+
+
+        <v-col 
+        cols="12"
+        md="6"> 
+                <v-select
+                :items="items"
+                label="To"
+                v-model='to'
+                
+            ></v-select>
+
+        </v-col>
+        <v-col
+        cols="12"
+        md="6"> 
+
+        <v-select
+        :items="items"
+        label="From"
+        v-model='from'
+      ></v-select>
+
+
+         </v-col>
+          
+        <v-col
+        cols="12"
+        md="6"
+        >
+            <template>
+                <v-container fluid>
+                  <v-textarea
+                    clearable
+                    solo
+                    clear-icon="mdi-close-circle"
+                    label="Text"
+                    value="This is clearable text."
+                    auto-grow
+                    v-model="to_txt"
+                    rows="8"
+                    row-height="30"
+
+
+                  ></v-textarea>
+                </v-container>
+              </template>
+        </v-col>
+
+        <v-col
+        cols="12"
+        md="6"
+        >
+            <template>
+                <v-container fluid>
+                  <v-textarea
+                  clearable
+                  solo
+                  clear-icon="mdi-close-circle"
+                  label="Text"
+                  value="This is clearable text."
+                  auto-grow
+                  v-model="from_txt"
+                  rows="8"
+                  row-height="30"
+                  ></v-textarea>
+                </v-container>
+              </template>
+
+              
+
+            
+        </v-col>
+
+       
+
+        <v-col
+        
+        
+        >
+
+        <template>
+          <audio v-if="audio" :src="audio" preload="auto" controls></audio>
+            <v-btn color="blue" v-on:click="traducir" dark block>
+              Translate 
+              
+            </v-btn>
+          </template>
+
+
+        </v-col>
+        
+          </v-row>
+        </v-container>
+      </v-main>
+    </v-app>
+  </template>
+
+
+    
+
+
+{% endblock %}
+
+
+{% block script %}
+
+
+<script>
+    new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        vuetify: new Vuetify(),
+        data : {
+            drawer: true,
+            to : '',
+            from : '',
+            to_txt :'',
+            from_txt : '',
+
+            items: ['Español', 'Ingles'],
+            audio : '',
+            snackbar: false,
+            text_snac: 'Procesando Audio....',
+            timeout: 30000,
+        },
+        methods:{
+
+            
+            async  traducir(){
+                var self = this;
+               let datos = await axios.post(`/post/traduccion/${self.to}/${self.from}/`,{
+                   texto : self.to_txt
+               })
+                self.from_txt = datos.data.instance
+                self.snackbar=true
+                setTimeout(()=>{self.audio_(datos.data.audio)}, 30000)
+            },
+
+            audio_(filename){ 
+              this.audio = filename
+            },
+        },
+    })
+</script>
+{% endblock %}

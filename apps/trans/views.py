@@ -2,65 +2,64 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
 from django.utils.encoding import uri_to_iri
-
+from gtts import gTTS
 import sys
+import uuid
+import threading
+import json
+from django.http import JsonResponse
+from django.core import serializers
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+import googletrans
+from googletrans import Translator 
 
-#import googletrans
-#from googletrans import Translator
+translator = Translator()
 
-# Create your views here.
-def traductor(request):
-    if request.method == 'GET':
-        texto = request.GET.get('traductor_box') #captura texto que se quiere traducir
-        #traducc = request.GET.get('traduccion') #captura la forma de traduccion
-        origen = request.GET.get('origen')
-        destino = request.GET.get('destino')
 
-        enc_origen = uri_to_iri(origen)
-        enc_destino = uri_to_iri(destino)
-        
-        if texto == None or texto == "":
-            texto = "Hola"
-            
-       
-
-        print(origen)
-        print(enc_origen)
-        print(enc_destino)
-
-        
-        
-        if origen == "Español":
+@method_decorator(csrf_exempt)
+def Traductor2(request,to,from_l, *args ,**kwargs):
+    if request.method == 'POST':
+        if to == "Español":
             trans_o = "es"
+            trans_f = "en"
         else:
             trans_o = "en"
-            
-
-        if destino == "Ingles":
-            trans_f = "en"
-            if texto == None or texto == "":
-                texto = "hi"
-        else:
             trans_f = "es"
-           
         
-
-        #if texto == None:
-        #    texto = "Hola"
-
-        #if traducc == None:
-        #    trans_o = "es"
-        #    trans_f = "en"
-        #else:
-        #    trans_o = "en"
-        #    trans_f = "es"
+        json_ = json.loads(request.body.decode("utf-8"))
+        texto = ''
+        for i in json_:
+            texto = json_[i]
         
-        import googletrans #importa libreria
-        from googletrans import Translator #importa libreria de funcion translate
-        #import pandas as pd
-        translator = Translator() #almacenamos el proceso en funciones
-        resultado = translator.translate(texto, src=trans_o, dest=trans_f) #funcion final de traduccion
-        ctx = {'TEXT' : resultado.text , 'Original': texto , 'ORIGEN': origen, 'DESTINO': destino}
-        return render(request, 'traductor/index.html', ctx)
+        resultado = translator.translate(texto, src=trans_o, dest=trans_f)
+        UUID = uuid.uuid1()
+        audio = tssTheaad(resultado.text,trans_f,str(UUID))
+        audio.start()
+
+        return JsonResponse({"instance": resultado.text , 'audio': '/static/'+ str(UUID)+'.mp3' }, status=200, safe=False)
     else:
-        return render(request, 'traductor/index.html')
+        return JsonResponse({"instance": 'adios'}, status=200, safe=False)
+
+
+
+def traductor(request):
+    return render(request, 'traductor/in.html')
+
+
+
+class tssTheaad(threading.Thread):
+    def __init__(self, text_file, lang, namefile):
+        threading.Thread.__init__(self)
+        self.text_file = text_file
+        self.lang = lang
+        self.namefile = namefile
+
+    def run(self):
+        try:
+            file = gTTS(text=self.text_file, lang=self.lang)
+            filename = self.namefile + '.mp3'
+            file.save("static/%s" %(str(filename)))
+            print('final de creacion')
+        except:
+            print('error en crear file')

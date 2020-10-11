@@ -19,7 +19,7 @@
 <form type="get" action="/">
     <div class="card">
     <div class="card-header">
-       Powered by Google Translator
+       Powered by Google Translator 
     </div>
     <div class="card-body center">
         <div class="row">
@@ -83,12 +83,36 @@
     </div>
     </div>
 </form>
+
+    <div id='app'>
+        [[ hola ]]
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <link rel="stylesheet" href="{% static 'traductor/jquery-3.4.1.slim.min.js' %}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'traductor/popper.min.js' %}" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'traductor/bootstrap.min.js' %}" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     
-   
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  
+
+    <script>
+        new Vue({
+            delimiters: ['[[', ']]'],
+            el: '#app',
+            vuetify: new Vuetify(),
+            data : {
+                drawer: true,
+                hola : 'Hola desde vue',
+            },
+            methods:{
+                post(){
+                    console.log('esta funcionando')
+                }
+            },
+        })
+    </script>
+
+
   </body>
 </html>

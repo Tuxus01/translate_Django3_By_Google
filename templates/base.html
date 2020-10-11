@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+ 
+
+ 
+  <div id="app" >
+    <template>
+      <v-app id="inspire"dark >
+        <form action="#" method="get">
+
+         
+          <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dark dense color="blue">
+           
+            <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+              <span>Traductor by Python </span>
+            </v-toolbar-title>
+            <v-divider inset class="mx-1" vertical></v-divider>
+
+
+            <!--Codigo centro de barra -->
+            <v-spacer></v-spacer>
+
+            {% if user.is_authenticated %}
+            
+            <v-divider inset class="mx-4" vertical></v-divider>
+            <v-btn  href="/logout" small fab color="red">
+              <v-icon>mdi-language-python</v-icon>
+            </v-btn>
+
+
+            <v-divider inset class="mx-4" vertical></v-divider>
+            {% if user.first_name == "" %}
+              {{ user }}
+            {% else %}
+              {{ user.first_name }} {{ user.last_name}}</br>
+            {% endif %}
+
+            {% else %}
+            <v-btn href="" icon>
+              <v-icon>mdi-language-python</v-icon>
+              </v-badge>
+            </v-btn>
+            {% endif %}
+          </v-app-bar>
+        
+        </form>
+
+
+        <!--Drawer -->
+        
+        <!--################################ DRAWER IZQUIERO Y DERECHO #####################################-->
+        <!--Barra de navegacion entre projectos -->
+       
+      
+
+
+        <!--Drawer-->
+        <v-main >
+            <v-container>
+          {% block content %}
+
+          {%  endblock %}
+          </v-container>
+        </v-main>
+      </v-app>
+    </template>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+
+  {% block script %}
+  
+  {% endblock %}
+</body>
+</html>
